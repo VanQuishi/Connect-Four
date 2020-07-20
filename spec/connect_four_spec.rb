@@ -5,7 +5,7 @@ describe Player do
         it "check last row cell if the \'cells\' below it are filled" do
             Player.empty()
             user = Player.new('X')
-            expect(user.is_filled_below?(3,5)). to eq(false)
+            expect(user.is_filled_below?(3,5)). to eq(true)
         end
 
         it "check a cell that have all filled cells below" do
@@ -28,12 +28,12 @@ describe Player do
             user = Player.new('X')
             board = Player.class_variable_get(:@@board)
             board[1][5] = 'X'
-            expect(user.drop('X',1,4)).to eq(true)
+            expect(user.drop(1,4)).to eq(true)
         end
 
         it "notify a failed drop" do
             user = Player.new('X')
-            expect(user.drop('X', 0,1)).to eq(false)
+            expect(user.drop(0,1)).to eq(false)
         end
     end
 
