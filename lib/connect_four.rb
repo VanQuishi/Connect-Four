@@ -8,10 +8,10 @@ class Player
 
     def self.display()
 
-        puts "  | 0 | 1 | 2 | 3 | 4 | 5 | 7"
+        puts "  |0 |1 |2 |3 |4 |5 |6"
         for i in (0..5)
-            puts "#{i} | #{@@board[i][0]} | #{@@board[i][1]} | #{@@board[i][2]} | #{@@board[i][3]} | #{@@board[i][4]} | #{@@board[i][5]} | #{@@board[i][6]}"
-            puts "----------------------"
+            puts "#{i} | #{@@board[0][i]} | #{@@board[1][i]} | #{@@board[2][i]} | #{@@board[3][i]} | #{@@board[4][i]} | #{@@board[5][i]} | #{@@board[6][i]}"
+            puts "------------------------"
         end
         #puts " #{@@board[0]} | #{@@board[1]} | #{@@board[2]} "
         #puts "-----------"
@@ -24,7 +24,7 @@ class Player
     def is_filled_below?(x,y)
         #if the position belongs to the last row, return false
         if y == 5
-            return false
+            return true
         end
 
         #otherwise:
@@ -47,12 +47,12 @@ class Player
         return false
     end
 
-    def drop(marker,x,y)
+    def drop(x,y)
         #a target cell is available to be filled is when all the 
         #cell below it are filled and the target cell is empty
 
         if (@@board[x][y] == nil) && (is_filled_below?(x,y))
-            @@board[x][y] = marker
+            @@board[x][y] = @marker
             return true
         end
 
@@ -124,7 +124,7 @@ class Player
     end
 
     def game_over?(x,y)
-        if vertical_win?(x) || horizontal_win?(y) || vertical_win?(x,y)
+        if vertical_win?(x) || horizontal_win?(y) || diagonal_win?(x,y)
             return true
         end
 
@@ -151,7 +151,9 @@ def connect_four()
     print "Name of 2nd player: "
     user_2_name = gets.chomp
 
-    while false
+    result = true
+
+    while result
         Player.display()
 
         puts "Where do you want to place your token, #{user_1_name}?"
@@ -167,14 +169,15 @@ def connect_four()
             print "Input y-coordinate: "
             y = gets.chomp.to_i()
 
-            user_1.drop(x,y)
-            Player.display()
+            #user_1.drop(x,y)
         end
+
+        Player.display()
 
         if user_1.game_over?(x,y)
             puts "#{user_1_name} won!!!"
             Player.empty()
-            true
+            result = false
         else
             puts "Where do you want to place your token, #{user_2_name}?"
             print "Input x-coordinate: "
@@ -196,12 +199,14 @@ def connect_four()
             if user_2.game_over?(x,y)
                 puts "#{user_2_name} won!!!"
                 Player.empty()
-                true
+                result = false
             end
         end
     end
 end
 
-Player.display()
+#Player.display()
 
 #p Player.class_variable_get(:@@board)
+
+connect_four();
